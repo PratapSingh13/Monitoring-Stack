@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-env
+  namespace: {{ .Release.Namespace }}
+data:
+  GF_SECURITY_ALLOW_EMBEDDING: 'true'
+  GF_AUTH_ANONYMOUS_ORG_NAME: Yotta
+  GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+  GF_AUTH_ANONYMOUS_ENABLED: 'true'
+  GF_AUTH_BASIC_ENABLED: 'true'
+  GF_PATHS_DATA: '/var/lib/grafana/'
+  GF_PATHS_LOGS: '/var/log/grafana'
+  GF_PATHS_PLUGINS: '/var/lib/grafana/plugins'
+  GF_PATHS_PROVISIONING: '/etc/grafana/provisioning'
+  GF_CONTENT_SECURITY_POLICY: 'false'
+  GF_LOG_MODE: console
+  GF_SERVER_DOMAIN: "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ .Values.ingress.hosts | first }}{{ else }}''{{ end }}"
+
+  

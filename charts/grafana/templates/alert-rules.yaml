@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-alert-rules
+#   labels:
+#     grafana_alert: grafana_alert_config
+data:
+    sample_rule.yaml: |-
+        apiVersion: 1
+        groups:
+            - orgId: 1
+            name: sample
+            folder: sample
+            interval: 1m
+            rules:
+                - uid: abc-123
+                title: sample_alert
+                condition: C
+                data:
+                    - refId: A
+                    relativeTimeRange:
+                        from: 600
+                        to: 0
+                    datasourceUid: prom123
+                    model:
+                        editorMode: builder
+                        expr: rate(node_cpu_seconds_total{instance="10.244.0.9:9100"}[$__rate_interval])
+                        hide: false
+                        instant: true
+                        intervalMs: 1000
+                        maxDataPoints: 43200
+                        range: false
+                        refId: A
+                    - refId: B
+                    relativeTimeRange:
+                        from: 600
+                        to: 0
+                    datasourceUid: __expr__
+                    model:
+                        conditions:
+                            - evaluator:
+                                params: []
+                                type: gt
+                            operator:
+                                type: and
+                            query:
+                                params:
+                                    - B
+                            reducer:
+                                params: []
+                                type: last
+                            type: query
+                        datasource:
+                            type: __expr__
+                            uid: __expr__
+                        expression: A
+                        hide: false
+                        intervalMs: 1000
+                        maxDataPoints: 43200
+                        reducer: last
+                        refId: B
+                        settings:
+                            mode: ""
+                        type: reduce
+                    - refId: C
+                    relativeTimeRange:
+                        from: 600
+                        to: 0
+                    datasourceUid: __expr__
+                    model:
+                        conditions:
+                            - evaluator:
+                                params:
+                                    - 1
+                                type: gt
+                            operator:
+                                type: and
+                            query:
+                                params:
+                                    - C
+                            reducer:
+                                params: []
+                                type: last
+                            type: query
+                        datasource:
+                            type: __expr__
+                            uid: __expr__
+                        expression: B
+                        hide: false
+                        intervalMs: 1000
+                        maxDataPoints: 43200
+                        refId: C
+                        type: threshold
+                dashboardUid: rYdddlPWk
+                panelId: 3
+                noDataState: NoData
+                execErrState: Error
+                for: 5m
+                annotations:
+                    __dashboardUid__: rYdddlPWk
+                    __panelId__: "3"
+                isPaused: false

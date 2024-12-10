@@ -1,0 +1,61 @@
+
+grafana:
+  enabled: true
+  fullnameOverride: "grafana"
+  adminUser: admin
+  adminPassword: admin
+  service:
+    type: NodePort
+  ingress:
+    enabled: false
+    ingressClassName: ""
+    host: ""
+    tlsSecret: ""
+  persistence:
+    size: 10Gi
+  sidecar:
+    alerts:
+      enabled: false
+    dashboards:
+      enabled: true
+    datasources:  
+      enabled: true
+
+victoria-metrics-cluster:
+  enabled: true
+  vmstorage:
+    persistentVolume:
+      size: 10Gi
+
+victoria-metrics-agent:
+  enabled: true
+
+kube-state-metrics:
+  enabled: true
+  fullnameOverride: "kube-state-metrics"
+
+prometheus-node-exporter:
+  enabled: true
+  fullnameOverride: "node-exporter"
+
+loki:
+  enabled: true
+  fullnameOverride: "loki"
+
+promtail:
+  enabled: true
+  config:
+    clients:
+      - url: "http://loki.monitoring.svc:3100/loki/api/v1/push"
+  fullnameOverride: "promtail"
+
+prometheus:
+  enabled: false
+  server:
+    name: prometheus-server
+    service:
+      type: ClusterIP
+    global:
+      scrape_interval: 15s
+    persistentVolume:
+      size: 10Gi

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloud-dashboards-a
+  labels:
+    grafana_dashboard: "1"
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/cloud"
+data:
+  centralised-instance-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/centralised-instance-monitoring.json" | indent 4 }}
+  based-on-uuid.json: |
+{{ .Files.Get "files/dashboards/cloud/based-on-uuid.json" | indent 4 }}
+  cloud-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/cloud-monitoring.json" | indent 4 }}
+  cloud-services-logs-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/cloud-services-logs-monitoring.json" | indent 4 }}
+  cost-optimisation.json: |
+{{ .Files.Get "files/dashboards/cloud/cost-optimisation.json" | indent 4 }}
+  custom-ipmi-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/custom-ipmi-monitoring.json" | indent 4 }}
+  ipmi-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/ipmi-monitoring.json" | indent 4 }}
+  ipmi_exporter.json: |
+{{ .Files.Get "files/dashboards/cloud/ipmi_exporter.json" | indent 4 }}
+  loadbalancer-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/loadbalancer-monitoring.json" | indent 4 }}
+  memcached-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/memcached-monitoring.json" | indent 4 }}
+  project-based-and-vm-based-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/project-based-and-vm-based-monitoring.json" | indent 4 }}
+  project-based-vm-name.json: |
+{{ .Files.Get "files/dashboards/cloud/project-based-vm-name.json" | indent 4 }}
+  rabbitmq-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/rabbitmq-monitoring.json" | indent 4 }}
+  storage-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/storage-monitoring.json" | indent 4 }}
+  vm-status-monitoring.json: |
+{{ .Files.Get "files/dashboards/cloud/vm-status-monitoring.json" | indent 4 }}

@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8s-dashboards-a
+  labels:
+    grafana_dashboard: "1"
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
+data:
+  k8s-logs-loki.json: |
+{{ .Files.Get "files/dashboards/kubernetes/k8s-logs-loki.json" | indent 4 }}
+  k8s-cluster-component-monitoring.json: |
+{{ .Files.Get "files/dashboards/kubernetes/k8s-cluster-component-monitoringV2.json" | indent 4 }}
+  cilium-agent-metrics.json: |
+{{ .Files.Get "files/dashboards/kubernetes/etcd-overview.json" | indent 4 }}
+  cilium-hubble-metrics.json: |
+{{ .Files.Get "files/dashboards/kubernetes/k8s-api-server.json" | indent 4 }}
+  cluster-nodes-monitoring.json: |
+{{ .Files.Get "files/dashboards/kubernetes/cluster-nodes-monitoring.json" | indent 4 }}
+  nginx-ingress-controller-monitoring.json: |
+{{ .Files.Get "files/dashboards/kubernetes/nginx-ingress-controller-monitoring.json" | indent 4 }}
+  pv-monitoring.json: |
+{{ .Files.Get "files/dashboards/kubernetes/pv-monitoring.json" | indent 4 }}
+  gpu-monitoring.json: |
+{{ .Files.Get "files/dashboards/kubernetes/gpu-monitoring.json" | indent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8s-dashboards-cilium
+  labels:
+    grafana_dashboard: "1"
+  annotations:
+    k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
+data:
+  cilium-agent-metrics-v1.12.json: |
+{{ .Files.Get "files/dashboards/kubernetes/cilium-agent-metrics-v1.12.json" | indent 4 }}
+  cilium-hubble-metrics-v1.12.json: |
+{{ .Files.Get "files/dashboards/kubernetes/cilium-hubble-metrics-v1.12.json" | indent 4 }}
+  cilium-operator-v1.12.json: |
+{{ .Files.Get "files/dashboards/kubernetes/cilium-operator-v1.12.json" | indent 4 }}
+

@@ -1,0 +1,36 @@
+{{- if .Values.vmbackup.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vmbackup
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: {{ .Values.vmbackup.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: victoria-metrics-backup
+              persistentVolumeClaim:
+                claimName: vmstorage-volume-{{ .Values.vmstorage.fullnameOverride }}-0
+            - name: aws-credentials
+              secret:
+                secretName: secret-remote-storage-keys
+          containers:
+            - name: vmbackup
+              image: victoriametrics/vmbackup:enterprise-stable
+              imagePullPolicy: IfNotPresent
+              command:
+              - sh
+              - -c
+              - |
+                /vmbackup-prod -snapshot.createURL=http://{{ .Values.vmstorage.fullnameOverride }}:8482/snapshot/create -storageDataPath=/storage -dst={{ .Values.vmbackup.s3.url }}/$(date '+%Y'-'%B')/$(date "+%d.%m.%Y")/ -credsFilePath=/etc/aws/credentials
+              volumeMounts:
+                - name: victoria-metrics-backup
+                  mountPath: /storage
+                - name: aws-credentials
+                  mountPath: /etc/aws
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+{{- end }}
